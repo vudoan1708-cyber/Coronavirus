@@ -22,17 +22,40 @@ let virusDisplay;
 
 let gallery_move = 1;
 
+// sound effects
 let horrorSound,
     navSound;
 
+let num = null; // number that users will speak using p5.speech
+
 function preload() {
-    horrorSound = loadSound('assets/sound/horror.mp3');
     navSound = loadSound('assets/sound/play_button_clicked.mp3');
 }
 
 function setup() {
     createCanvas(window.innerWidth, window.innerHeight).parent('canvas');
     // frameRate(30);
+    // load p5 speech
+    let lang = navigator.language || 'en-UK';
+    let speechRec = new p5.SpeechRec(lang, gotSpeech);
+
+    let continuous = true,
+        interim = false;
+    speechRec.start(continuous, interim);
+    // store users' speech into a variable
+    function gotSpeech() {
+        let myString = speechRec.resultString;
+        // check if the speechRec thinks the result is true
+        if (speechRec.resultValue) {
+            // check if the incoming word is a number 
+            if (!isNaN(Number(myString))) {
+                // assign that number to control gallery movement
+                gallery_move = Number(myString);
+            }
+        }
+        // console.log(myString);
+    }
+    // retrieve the external API
     getVirus()
         .then((data) => {
             virusData = data;
@@ -99,6 +122,7 @@ function keyPressed() {
 function displayVirus() {  
     virusDisplay.show();
     virusDisplay.showGlobalData();
+    virusDisplay.showCountries();
     virusDisplay.showDates_Times();
 
     if (gallery_move < 1) {

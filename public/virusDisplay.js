@@ -4,6 +4,12 @@ class VirusDisplay {
         this.y = height / 2;
         this.d = 20;
         this.q = 0;
+
+        // create an empty array with the length of newConfirmed
+        this.numbers = Array(newConfirmed.length);
+
+        // for countries's names
+        this.country_y = 0;
     }
 
     show() {
@@ -157,6 +163,32 @@ class VirusDisplay {
             textSize(width / 80);
             fill(0, 200, 100);
             text("Globally Recovered Cases: " + global_totalRecovered, (width - (width / (this.d / 5)) / 2), height / 2 + 80);
+        pop();
+    }
+
+    showCountries() {
+        // push total length of countryNames array into this.numbers
+        for (let n = 0; n < countryNames.length; n++) {
+            this.numbers.push(n + 1);
+        }
+        push();
+            stroke(0);
+            strokeWeight(2);
+            fill(50, 100);
+            rect((width / (this.d / 5)) / 2, height / 2, width / (this.d / 5), this.d * 50);
+            fill(255);
+            textSize(width / 60);
+
+            let borderBox = 40;
+            for (let c = 0; c < countryNames.length; c++) {
+                if (gallery_move > 1 && gallery_move < countryNames.length + 1) {
+                    this.country_y = (borderBox * (c + 1)) - (borderBox * (gallery_move - 1));
+                } else this.country_y = borderBox * (c + 1); // to show the first country
+
+                if (this.country_y == borderBox) fill(253, 100, 200);
+                else fill(255, 200);
+                text(this.numbers[c] + '. ' + countryNames[c], (width / (this.d / 5)) / 2, this.country_y);
+            }
         pop();
     }
 }
