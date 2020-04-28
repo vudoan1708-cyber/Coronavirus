@@ -28,7 +28,8 @@ let horrorSound,
 
 let num = null; // number that users will speak using p5.speech
 
-let instruction = false;
+let instruction = true,
+    mobile = false;
 
 function preload() {
     navSound = loadSound('assets/sound/play_button_clicked.mp3');
@@ -128,33 +129,76 @@ function keyPressed() {
     }
 }
 
-function mouseReleased() {
-    // <
-    if(mouseX > width / 2 - 300 && mouseX < width / 2 - 195) {
-        if (mouseY > height / 2 - 35 && mouseY < height / 2 + 45) {
-            navSound.play();
-            gallery_move--;
+// for larger devices
+function mousePressed() {
+    if (!mobile) {
+        // <
+        if(mouseX > width / 2 - 300 && mouseX < width / 2 - 195) {
+            if (mouseY > height / 2 - 35 && mouseY < height / 2 + 45) {
+                navSound.play();
+                gallery_move--;
+            }
+        }
+
+        // >
+        if(mouseX < width / 2 + 300 && mouseX > width / 2 + 195) {
+            if (mouseY > height / 2 - 35 && mouseY < height / 2 + 45) {
+                navSound.play();
+                gallery_move++;
+            }
+        }
+
+        // QUESTION MARKS (TO TRIGGER THE INSTRUCTIONS)
+        let d2 = dist(mouseX, mouseY, width / 2 + 300, 25);
+        if (d2 < 25) {
+            if (!instruction) {
+                instruction = true;
+                navSound.play();
+            }
+            else {
+                instruction = false;
+                navSound.play();
+            }
         }
     }
+}
 
-    // >
-    if(mouseX < width / 2 + 300 && mouseX > width / 2 + 195) {
-        if (mouseY > height / 2 - 35 && mouseY < height / 2 + 45) {
-            navSound.play();
-            gallery_move++;
+// for mobile
+function touchStarted() {
+    if (mouseX > 0 && mouseX < width) {
+        if (mouseY > 0 && mouseY < height) {
+            mobile = true;
         }
     }
-
-    // QUESTION MARKS (TO TRIGGER THE INSTRUCTIONS)
-    let d2 = dist(mouseX, mouseY, width / 2 + 300, 25);
-    if (d2 < 25) {
-        if (!instruction) {
-            instruction = true;
-            navSound.play();
+    
+    if (mobile) {
+        // <
+        if(mouseX > 0 && mouseX < width / 2 - 45) {
+            if (mouseY > 0 && mouseY < height) {
+                navSound.play();
+                gallery_move--;
+            }
         }
-        else {
-            instruction = false;
-            navSound.play();
+
+        // >
+        if(mouseX < width && mouseX > width / 2 + 45) {
+            if (mouseY > 0 && mouseY < height) {
+                navSound.play();
+                gallery_move++;
+            }
+        }
+
+        // QUESTION MARKS (TO TRIGGER THE INSTRUCTIONS)
+        let d2 = dist(mouseX, mouseY, width / 2 + 100, 25);
+        if (d2 < 25) {
+            if (!instruction) {
+                instruction = true;
+                navSound.play();
+            }
+            else {
+                instruction = false;
+                navSound.play();
+            }
         }
     }
 }
@@ -169,13 +213,23 @@ function displayInstruction() {
             strokeWeight(2);
             fill(0);
             rect(0, 0, width - width / 4, height - height / 2);
-            fill(200);
             noStroke();
+            fill(200, 253, 100);
+            textSize(width / 70);
+            text('Please First CLICK/PRESS Anywhere On The Screen For The System To Detect The Type of Used Device.' + '\n' +
+                'Thank You!!!',
+                0, -100);
+
+            fill(200);
             textSize(width / 80);
             text('You Might Want To Use The Buttons To Explore The Data About The COVID19 Worldwide',
                 0, -50);
-            text('Or If You Notice When The Site Asks For Microphone Access Permission, You Can Say A' + '\n' + 'Number That Corresponds To A Country To See Specific Data',
+            text('Or If You Notice When The Site Asks For Microphone Access Permission, You Can Say A' + '\n' + 
+                    'Number That Corresponds To A Country To See Its Specific Data',
                 0, 0);
+            text("If The Site Doesn't Respond According To Your Speech (It Has To Be A Number), And/Or," + '\n' + 
+                    'If There Is No Available Recording Button On The Tab. Refresh The Page, And Remember To Click "Allow" When Prompted',
+                0, 100);
         pop();
     }
 
@@ -183,21 +237,31 @@ function displayInstruction() {
     let d2 = dist(mouseX, mouseY, width / 2 + 300, 25);
     if (d2 < 25) {
         push();
-            translate(width / 2 + 300, 25);
+            if (!mobile) {
+                translate(width / 2 + 300, 25);
+            } else translate(width / 2 + 100, 25);
             fill(255, 50, 0);
-            ellipse(0, 0, 50);
+            if (!mobile) ellipse(0, 0, 50);
+            else ellipse(0, 0, 25);
             fill(255);
-            textSize(width / 40);
-            text('?', 0, 10);
+            if (!mobile) textSize(width / 30);
+            else textSize(width / 25);
+            if (!instruction) text('?', 0, 10);
+            else text('X', 0, 10);
         pop();
     } else {
         push();
-            translate(width / 2 + 300, 25);
+            if (!mobile) {
+                translate(width / 2 + 300, 25);
+            } else translate(width / 2 + 100, 25);
             fill(255, 50, 0);
-            ellipse(0, 0, 50);
+            if (!mobile) ellipse(0, 0, 50);
+            else ellipse(0, 0, 25);
             fill(0);
-            textSize(width / 50);
-            text('?', 0, 10);
+            if (!mobile) textSize(width / 50);
+            else textSize(width / 45);
+            if (!instruction) text('?', 0, 10);
+            else text('X', 0, 10);
         pop();
     }
 }
@@ -205,7 +269,8 @@ function displayInstruction() {
 function displayBtn() {
     // <
     push();
-        translate(width / 2 - 250, height / 2);
+        if (!mobile) translate(width / 2 - 250, height / 2);
+        else translate(width / 2 - 100, height / 2);
         if(mouseX > width / 2 - 300 && mouseX < width / 2 - 195) {
             if (mouseY > height / 2 - 35 && mouseY < height / 2 + 45) {
                 scale(1.2, 1.2);
@@ -220,7 +285,8 @@ function displayBtn() {
 
     // >
     push();
-        translate(width / 2 + 250, height / 2);
+        if (!mobile) translate(width / 2 + 250, height / 2);
+        else translate(width / 2 + 100, height / 2);
         if(mouseX < width / 2 + 300 && mouseX > width / 2 + 195) {
             if (mouseY > height / 2 - 35 && mouseY < height / 2 + 45) {
                 scale(1.2, 1.2);
