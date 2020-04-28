@@ -53,32 +53,62 @@ class VirusDisplay {
                         noFill();
                         stroke(255, 100);
                         strokeWeight(2.5);
-                        beginShape(POINTS);
-                        let n = 6, distance = 60;
-                            for (let a = 0; a <= 360; a += 0.2) {
-                                const k = a * distance * Math.PI / 180;
-                                const r = width * sin(n * k);
-                                const x = r * cos(a);
-                                const y = r * sin(a);
-                                rotate(this.q);
-                                vertex(x, y);
-                            }
-                        endShape(CLOSE);
+                        if (!mobile) {
+                            beginShape(POINTS);
+                            let n = 6, distance = 60;
+                                for (let a = 0; a <= 360; a += 0.2) {
+                                    const k = a * distance * Math.PI / 180;
+                                    const r = width * sin(n * k);
+                                    const x = r * cos(a);
+                                    const y = r * sin(a);
+                                    rotate(this.q);
+                                    vertex(x, y);
+                                }
+                            endShape(CLOSE);
+    
+                            stroke(94, 212, 255, 50);
+                            beginShape(POINTS);
+                                for (let a = 0; a <= 360; a += 0.2) {
+                                    distance = 51;
+                                    const k = a * distance * Math.PI / 180;
+                                    const r = width / 2 * sin(n * k);
+                                    const x = r * cos(a);
+                                    const y = r * sin(a);
+                                    rotate(this.q);
+                                    vertex(x, y);
+                                }
+                            endShape(CLOSE);
+                            if (this.q <= 360) this.q += 0.0000009;
+                            else this.q = 0;
+                        } else  {
+                            beginShape(POINTS);
+                                let n = 6, distance = 60;
+                                for (let a = 0; a <= 360; a += 0.2) {
+                                    const k = a * distance * Math.PI / 180;
+                                    const r = width * 2 * sin(n * k);
+                                    const x = r * cos(a);
+                                    const y = r * sin(a);
+                                    rotate(this.q);
+                                    vertex(x, y);
+                                }
+                            endShape(CLOSE);
 
-                        stroke(94, 212, 255, 50);
-                        beginShape(POINTS);
-                            for (let a = 0; a <= 360; a += 0.2) {
-                                distance = 51;
-                                const k = a * distance * Math.PI / 180;
-                                const r = width / 2 * sin(n * k);
-                                const x = r * cos(a);
-                                const y = r * sin(a);
-                                rotate(this.q);
-                                vertex(x, y);
-                            }
-                        endShape(CLOSE);
-                        if (this.q <= 360) this.q += 0.0000009;
-                        else this.q = 0;
+                            stroke(94, 212, 255, 50);
+                            beginShape(POINTS);
+                                for (let a = 0; a <= 360; a += 0.2) {
+                                    distance = 51;
+                                    const k = a * distance * Math.PI / 180;
+                                    const r = width * sin(n * k);
+                                    const x = r * cos(a);
+                                    const y = r * sin(a);
+                                    rotate(this.q);
+                                    vertex(x, y);
+                                }
+                            endShape(CLOSE);
+                            if (this.q <= 360) this.q += 0.0000009;
+                            else this.q = 0;
+                        }
+                        
                     pop();
 
                     // information
@@ -145,7 +175,7 @@ class VirusDisplay {
             stroke(0);
             strokeWeight(2);
             fill(100, 100);
-            rect(width / 2, 50, this.d * 20, this.d * 5);
+            rect(width / 2, 50, width / 5, this.d * 5);
             fill(200);
             textSize(width / 60);
             text(days, width / 2, 40);

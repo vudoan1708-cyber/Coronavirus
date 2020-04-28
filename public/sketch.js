@@ -54,6 +54,7 @@ function setup() {
             if (!isNaN(Number(myString))) {
                 // assign that number to control gallery movement
                 gallery_move = Number(myString);
+                navSound.play();
             }
         }
         // console.log(myString);
@@ -173,7 +174,7 @@ function touchStarted() {
     
     if (mobile) {
         // <
-        if(mouseX > 0 && mouseX < width / 2 - 45) {
+        if(mouseX > 0 && mouseX < width / 2 - (width / (virusDisplay.d / 5))) {
             if (mouseY > 0 && mouseY < height) {
                 navSound.play();
                 gallery_move--;
@@ -181,7 +182,7 @@ function touchStarted() {
         }
 
         // >
-        if(mouseX < width && mouseX > width / 2 + 45) {
+        if(mouseX < width && mouseX > width / 2 + (width / (virusDisplay.d / 5))) {
             if (mouseY > 0 && mouseY < height) {
                 navSound.play();
                 gallery_move++;
@@ -234,6 +235,10 @@ function displayInstruction() {
     }
 
     // QUESTION MARKS (TO TRIGGER THE INSTRUCTIONS)
+    let questionPosition;
+    if (!mobile) questionPosition = 10;
+    else questionPosition = 5;
+
     let d2 = dist(mouseX, mouseY, width / 2 + 300, 25);
     if (d2 < 25) {
         push();
@@ -246,8 +251,8 @@ function displayInstruction() {
             fill(255);
             if (!mobile) textSize(width / 30);
             else textSize(width / 25);
-            if (!instruction) text('?', 0, 10);
-            else text('X', 0, 10);
+            if (!instruction) text('?', 0, questionPosition);
+            else text('X', 0, questionPosition);
         pop();
     } else {
         push();
@@ -258,10 +263,10 @@ function displayInstruction() {
             if (!mobile) ellipse(0, 0, 50);
             else ellipse(0, 0, 25);
             fill(0);
-            if (!mobile) textSize(width / 50);
+            if (!mobile) textSize(width / 45);
             else textSize(width / 45);
-            if (!instruction) text('?', 0, 10);
-            else text('X', 0, 10);
+            if (!instruction) text('?', 0, questionPosition);
+            else text('X', 0, questionPosition);
         pop();
     }
 }
