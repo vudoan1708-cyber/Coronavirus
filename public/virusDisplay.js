@@ -185,7 +185,9 @@ class VirusDisplay {
                     this.country_y = (borderBox * (c + 1)) - (borderBox * (gallery_move - 1));
                 } else this.country_y = borderBox * (c + 1); // to show the first country
 
+                // highlight a chosen country with purple-ish
                 if (this.country_y == borderBox) fill(253, 100, 200);
+                // otherwise, fill with white with some alpha
                 else fill(255, 200);
                 text(this.numbers[c] + '. ' + countryNames[c], (width / (this.d / 5)) / 2, this.country_y);
             }

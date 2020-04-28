@@ -28,6 +28,8 @@ let horrorSound,
 
 let num = null; // number that users will speak using p5.speech
 
+let instruction = false;
+
 function preload() {
     navSound = loadSound('assets/sound/play_button_clicked.mp3');
 }
@@ -105,6 +107,7 @@ function draw() {
     }
 }
 
+// for prototyping
 function keyPressed() {
 
     if (keyCode === RIGHT_ARROW) {
@@ -115,8 +118,120 @@ function keyPressed() {
         navSound.play();
         gallery_move--;
         // console.log(gallery_move)
-
     }
+
+    // instructions
+    if (key == ' ') {
+        if (!instruction) {
+            instruction = true;
+        } else instruction = false;
+    }
+}
+
+function mouseReleased() {
+    // <
+    if(mouseX > width / 2 - 300 && mouseX < width / 2 - 195) {
+        if (mouseY > height / 2 - 35 && mouseY < height / 2 + 45) {
+            navSound.play();
+            gallery_move--;
+        }
+    }
+
+    // >
+    if(mouseX < width / 2 + 300 && mouseX > width / 2 + 195) {
+        if (mouseY > height / 2 - 35 && mouseY < height / 2 + 45) {
+            navSound.play();
+            gallery_move++;
+        }
+    }
+
+    // QUESTION MARKS (TO TRIGGER THE INSTRUCTIONS)
+    let d2 = dist(mouseX, mouseY, width / 2 + 300, 25);
+    if (d2 < 25) {
+        if (!instruction) {
+            instruction = true;
+            navSound.play();
+        }
+        else {
+            instruction = false;
+            navSound.play();
+        }
+    }
+}
+
+function displayInstruction() {
+    if (instruction) {
+        push();
+            translate(width / 2, height / 2);
+            fill(0, 150);
+            rect(0, 0, width, height);
+            stroke(255, 200);
+            strokeWeight(2);
+            fill(0);
+            rect(0, 0, width - width / 4, height - height / 2);
+            fill(200);
+            noStroke();
+            textSize(width / 80);
+            text('You Might Want To Use The Buttons To Explore The Data About The COVID19 Worldwide',
+                0, -50);
+            text('Or If You Notice When The Site Asks For Microphone Access Permission, You Can Say A' + '\n' + 'Number That Corresponds To A Country To See Specific Data',
+                0, 0);
+        pop();
+    }
+
+    // QUESTION MARKS (TO TRIGGER THE INSTRUCTIONS)
+    let d2 = dist(mouseX, mouseY, width / 2 + 300, 25);
+    if (d2 < 25) {
+        push();
+            translate(width / 2 + 300, 25);
+            fill(255, 50, 0);
+            ellipse(0, 0, 50);
+            fill(255);
+            textSize(width / 40);
+            text('?', 0, 10);
+        pop();
+    } else {
+        push();
+            translate(width / 2 + 300, 25);
+            fill(255, 50, 0);
+            ellipse(0, 0, 50);
+            fill(0);
+            textSize(width / 50);
+            text('?', 0, 10);
+        pop();
+    }
+}
+
+function displayBtn() {
+    // <
+    push();
+        translate(width / 2 - 250, height / 2);
+        if(mouseX > width / 2 - 300 && mouseX < width / 2 - 195) {
+            if (mouseY > height / 2 - 35 && mouseY < height / 2 + 45) {
+                scale(1.2, 1.2);
+            }
+        }
+        scale(width / 2000);
+        fill(0, 100);
+        triangle(-50, 5, 55, 45, 55, -35);
+        fill(200);
+        triangle(-50, 0, 50, 40, 50, -40);
+    pop();
+
+    // >
+    push();
+        translate(width / 2 + 250, height / 2);
+        if(mouseX < width / 2 + 300 && mouseX > width / 2 + 195) {
+            if (mouseY > height / 2 - 35 && mouseY < height / 2 + 45) {
+                scale(1.2, 1.2);
+            }
+        }
+        scale(width / 2000);
+        fill(0, 100);
+        triangle(50, 5, -55, 45, -55, -35);
+        fill(200);
+        triangle(50, 0, -50, 40, -50, -40);
+    pop();
 }
 
 function displayVirus() {  
@@ -124,6 +239,9 @@ function displayVirus() {
     virusDisplay.showGlobalData();
     virusDisplay.showCountries();
     virusDisplay.showDates_Times();
+
+    displayBtn();
+    displayInstruction();
 
     if (gallery_move < 1) {
         gallery_move = virusData.Countries.length;
