@@ -54,7 +54,7 @@ class VirusDisplay {
                         stroke(255, 100);
                         strokeWeight(2.5);
                         beginShape(POINTS);
-                        let n = 6, distance = 71;
+                        let n = 6, distance = 60;
                             for (let a = 0; a <= 360; a += 0.2) {
                                 const k = a * distance * Math.PI / 180;
                                 const r = width * sin(n * k);
@@ -64,7 +64,20 @@ class VirusDisplay {
                                 vertex(x, y);
                             }
                         endShape(CLOSE);
-                        if (this.q <= 360) this.q += 0.0000005;
+
+                        stroke(94, 212, 255, 50);
+                        beginShape(POINTS);
+                            for (let a = 0; a <= 360; a += 0.2) {
+                                distance = 51;
+                                const k = a * distance * Math.PI / 180;
+                                const r = width / 2 * sin(n * k);
+                                const x = r * cos(a);
+                                const y = r * sin(a);
+                                rotate(this.q);
+                                vertex(x, y);
+                            }
+                        endShape(CLOSE);
+                        if (this.q <= 360) this.q += 0.0000009;
                         else this.q = 0;
                     pop();
 
@@ -154,15 +167,15 @@ class VirusDisplay {
             fill(255, 100);
             text("Globally Confirmed Cases: " + global_totalConfirmed, (width - (width / (this.d / 5)) / 2), height / 2 - 20);
 
-            // global deaths
-            textSize(width / 80);
-            fill(255, 0, 0);
-            text("Globally Death Cases: " + global_totalDeaths, (width - (width / (this.d / 5)) / 2), height / 2 + 30);
-
             // global recovered
             textSize(width / 80);
             fill(0, 200, 100);
-            text("Globally Recovered Cases: " + global_totalRecovered, (width - (width / (this.d / 5)) / 2), height / 2 + 80);
+            text("Globally Recovered Cases: " + global_totalRecovered, (width - (width / (this.d / 5)) / 2), height / 2 + 30);
+
+            // global deaths
+            textSize(width / 80);
+            fill(255, 0, 0);
+            text("Globally Death Cases: " + global_totalDeaths, (width - (width / (this.d / 5)) / 2), height / 2 + 80);
         pop();
     }
 

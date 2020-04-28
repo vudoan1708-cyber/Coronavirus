@@ -223,11 +223,11 @@ function displayInstruction() {
             fill(200);
             textSize(width / 80);
             text('You Might Want To Use The Buttons To Explore The Data About The COVID19 Worldwide',
-                0, -50);
+                0, -40);
             text('Or If You Notice When The Site Asks For Microphone Access Permission, You Can Say A' + '\n' + 
-                    'Number That Corresponds To A Country To See Its Specific Data',
-                0, 0);
-            text("If The Site Doesn't Respond According To Your Speech (It Has To Be A Number), And/Or," + '\n' + 
+                    'Number That Corresponds To A Country To See Its Specific Data (Mobile Limited Access Currently)',
+                0, 20);
+            text("If The Site Doesn't Respond Accordingly To Your Speech (It Has To Be A Number), And/Or," + '\n' + 
                     'If There Is No Available Recording Button On The Tab. Refresh The Page, And Remember To Click "Allow" When Prompted',
                 0, 100);
         pop();
