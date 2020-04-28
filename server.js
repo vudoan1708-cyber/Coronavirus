@@ -11,4 +11,4 @@ server.listen(port, () => {
 
 app.use(express.static('public'));
 
-app.use(express.json({ limit: '1mb' })); // set limit for data transfer
+app.use(express.json({ limit: '0.5mb' })); // set limit for data transfer
