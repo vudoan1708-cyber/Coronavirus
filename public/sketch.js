@@ -20,7 +20,8 @@ let countryNames = [], // store the countries names
 
 let virusDisplay;
 
-let gallery_move = 1;
+let gallery_move = 1,
+    graph_move = 1;
 
 // sound effects
 let horrorSound,
@@ -87,7 +88,14 @@ function setup() {
             global_totalRecovered = virusData.Global.TotalRecovered;
         })
         .then(() => { loading = false; })
-        .catch(err => { console.error(err); })
+        .catch(err => { 
+            console.error(err); 
+            push();
+                fill(255, 0, 0, 200);
+                textSize(width / 30);
+                text('Too Many Request!!!' + '\n' + 'Please Wait For A Bit And Try Refreshing The Site', width / 2, height / 2);
+            pop();
+        })
 
     virusDisplay = new VirusDisplay();
     // horrorSound.play();
@@ -128,6 +136,14 @@ function keyPressed() {
             instruction = true;
         } else instruction = false;
     }
+
+    if (keyCode === UP_ARROW) {
+        navSound.play();
+        graph_move++;
+    } else if (keyCode === DOWN_ARROW) {
+        navSound.play();
+        graph_move--;
+    }
 }
 
 // for larger devices
@@ -162,6 +178,22 @@ function mousePressed() {
                 else {
                     instruction = false;
                     navSound.play();
+                }
+            }
+        } else { // or if in the show cases section
+            // >
+            if(mouseX < width / 2 + 300 && mouseX > width / 2 + 195) {
+                if (mouseY > height - (height / 25) - 35 && mouseY < height - (height / 25) + 45) {
+                    navSound.play();
+                    graph_move++;
+                }
+            }
+
+            // <
+            if(mouseX > width / 2 - 300 && mouseX < width / 2 - 195) {
+                if (mouseY > height - (height / 25) - 35 && mouseY < height - (height / 25) + 45) {
+                    navSound.play();
+                    graph_move++;
                 }
             }
         }
@@ -218,6 +250,22 @@ function touchStarted() {
                 else {
                     instruction = false;
                     navSound.play();
+                }
+            }
+        } else {
+            // <
+            if(mouseX > width / 2 - 60 && mouseX < width / 2 - 40) {
+                if (mouseY > height - (height / 25) - 35 && mouseY < height - (height / 25) + 45) {
+                    navSound.play();
+                    graph_move++;
+                }
+            }
+
+            // > 
+            if(mouseX < width / 2 + 60 && mouseX > width / 2 + 40) {
+                if (mouseY > height - (height / 25) - 35 && mouseY < height - (height / 25) + 45) {
+                    navSound.play();
+                    graph_move++;
                 }
             }
         }
@@ -349,11 +397,18 @@ function displayVirus() {
     displayInstruction();
 
     virusDisplay.showNewCases();
+    virusDisplay.showNewCases_Btn();
     
     if (gallery_move < 1) {
         gallery_move = virusData.Countries.length;
     } else if (gallery_move > virusData.Countries.length) {
         gallery_move = 1;
+    }
+
+    if (graph_move < 1) {
+        graph_move = newConfirmed.length;
+    } else if (graph_move > 2) {
+        graph_move = 1;
     }
 }
 

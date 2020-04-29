@@ -231,17 +231,29 @@ class VirusDisplay {
                     // check if newConfirmed is a number and if it's larger than 0
                     if ( !isNaN(Number(newConfirmed[j])) && newConfirmed[j] > 0 ) {
                         const newWidth = width / 120;
-                        let newStep = j * newWidth;
+                        let newStep;
                         rectMode(CORNER);
+                        // move graph visualisation
+                        if (graph_move > 1 && graph_move < 3) {
+                            newStep = j * newWidth - (width - this.d * 5) - 100;
+                        } else newStep = j * newWidth;
+
                         // show countries and change fill when on hover
                         if (mouseX > newStep && mouseX < newStep + newWidth) {
                             // for filling the text
                             fill(253, 100, 100);
                             textSize(width / 75);
+                            // check if mouse x coordinate is going over the new cases button
                             if (mouseX > width - width / (this.d / 5) && mouseX < width) {
                                 text(countryNames[j], width / 2, height - (height / 5) / 1.5);
                                 fill(255, 180);
                                 text(newConfirmed[j], width / 2, height - (height / 5) / 2.5);
+                                // check if mouse x coordinate is going passed the first rect
+                            } else if (mouseX < width - (width - this.d * 5)) { 
+                                text(countryNames[j], width / 2, height - (height / 5) / 1.5);
+                                fill(255, 180);
+                                text(newConfirmed[j], width / 2, height - (height / 5) / 2.5);
+                                // otherwise
                             } else {
                                 text(countryNames[j], newStep, height - (height / 5) / 1.5);
                                 fill(255, 180);
@@ -365,6 +377,42 @@ class VirusDisplay {
                 }
             }
         pop();
+    }
+
+    showNewCases_Btn() {
+        if (this.showCases) {
+            // <
+            push();
+                if (!mobile) translate(width / 2 - 250, height - (height / 25));
+                else translate(width / 2 - 50, height - (height / 25));
+                if(mouseX > width / 2 - 300 && mouseX < width / 2 - 195) {
+                    if (mouseY > height - (height / 25) - 35 && mouseY < height - (height / 25) + 45) {
+                        scale(1.2, 1.2);
+                    }
+                }
+                scale(width / 2800);
+                fill(0, 100);
+                triangle(-50, 5, 55, 45, 55, -35);
+                fill(200);
+                triangle(-50, 0, 50, 40, 50, -40);
+            pop();
+
+            // >
+            push();
+                if (!mobile) translate(width / 2 + 250, height - (height / 25));
+                else translate(width / 2 + 50, height - (height / 25));
+                if(mouseX < width / 2 + 300 && mouseX > width / 2 + 195) {
+                    if (mouseY > height - (height / 25) - 35 && mouseY < height - (height / 25) + 45) {
+                        scale(1.2, 1.2);
+                    }
+                }
+                scale(width / 2800);
+                fill(0, 100);
+                triangle(50, 5, -55, 45, -55, -35);
+                fill(200);
+                triangle(50, 0, -50, 40, -50, -40);
+            pop();
+        }
     }
 
     showCountries() {
