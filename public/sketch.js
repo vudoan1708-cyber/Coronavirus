@@ -133,32 +133,46 @@ function keyPressed() {
 // for larger devices
 function mousePressed() {
     if (!mobile) {
-        // <
-        if(mouseX > width / 2 - 300 && mouseX < width / 2 - 195) {
-            if (mouseY > height / 2 - 35 && mouseY < height / 2 + 45) {
-                navSound.play();
-                gallery_move--;
+        if (!virusDisplay.showCases) {
+            // <
+            if(mouseX > width / 2 - 300 && mouseX < width / 2 - 195) {
+                if (mouseY > height / 2 - 35 && mouseY < height / 2 + 45) {
+                    navSound.play();
+                    gallery_move--;
+                }
+            }
+
+            // >
+            if(mouseX < width / 2 + 300 && mouseX > width / 2 + 195) {
+                if (mouseY > height / 2 - 35 && mouseY < height / 2 + 45) {
+                    navSound.play();
+                    gallery_move++;
+                }
+            }
+
+            // QUESTION MARKS (TO TRIGGER THE INSTRUCTIONS)
+            let d2 = dist(mouseX, mouseY, width / 2 + 300, 25);
+            if (d2 < 25) {
+                if (!instruction) {
+                    instruction = true;
+                    navSound.play();
+                }
+                else {
+                    instruction = false;
+                    navSound.play();
+                }
             }
         }
+        
 
-        // >
-        if(mouseX < width / 2 + 300 && mouseX > width / 2 + 195) {
-            if (mouseY > height / 2 - 35 && mouseY < height / 2 + 45) {
-                navSound.play();
-                gallery_move++;
-            }
-        }
-
-        // QUESTION MARKS (TO TRIGGER THE INSTRUCTIONS)
-        let d2 = dist(mouseX, mouseY, width / 2 + 300, 25);
-        if (d2 < 25) {
-            if (!instruction) {
-                instruction = true;
-                navSound.play();
-            }
-            else {
-                instruction = false;
-                navSound.play();
+        // show cases button
+        if (mouseX > width - width / (virusDisplay.d / 5) && mouseX < width) {
+            if (mouseY > height - (height / 5) && mouseY < height) {
+                if (!instruction) {
+                    navSound.play();
+                    if (!virusDisplay.showCases) virusDisplay.showCases = true;
+                    else virusDisplay.showCases = false;
+                }
             }
         }
     }
@@ -173,32 +187,45 @@ function touchStarted() {
     }
     
     if (mobile) {
-        // <
-        if(mouseX > 0 && mouseX < width / 2 - (width / (virusDisplay.d / 5))) {
-            if (mouseY > 0 && mouseY < height) {
-                navSound.play();
-                gallery_move--;
+        if (!virusDisplay.showCases) {
+            // <
+            if(mouseX > 0 && mouseX < width / 2 - (width / (virusDisplay.d / 5))) {
+                if (mouseY > 0 && mouseY < height) {
+                    navSound.play();
+                    gallery_move--;
+                }
+            }
+
+            // >
+            if(mouseX < width && mouseX > width / 2 + (width / (virusDisplay.d / 5))) {
+                if (mouseY > 0 && mouseY < height - (height / 5)) {
+                    navSound.play();
+                    gallery_move++;
+                }
+            }
+
+            // QUESTION MARKS (TO TRIGGER THE INSTRUCTIONS)
+            let d2 = dist(mouseX, mouseY, width / 2 + 100, 25);
+            if (d2 < 25) {
+                if (!instruction) {
+                    instruction = true;
+                    navSound.play();
+                }
+                else {
+                    instruction = false;
+                    navSound.play();
+                }
             }
         }
 
-        // >
-        if(mouseX < width && mouseX > width / 2 + (width / (virusDisplay.d / 5))) {
-            if (mouseY > 0 && mouseY < height) {
-                navSound.play();
-                gallery_move++;
-            }
-        }
-
-        // QUESTION MARKS (TO TRIGGER THE INSTRUCTIONS)
-        let d2 = dist(mouseX, mouseY, width / 2 + 100, 25);
-        if (d2 < 25) {
-            if (!instruction) {
-                instruction = true;
-                navSound.play();
-            }
-            else {
-                instruction = false;
-                navSound.play();
+        // show cases button
+        if (mouseX > width - width / (virusDisplay.d / 5) && mouseX < width) {
+            if (mouseY > height - (height / 5) && mouseY < height) {
+                if (!instruction) {
+                    navSound.play();
+                    if (!virusDisplay.showCases) virusDisplay.showCases = true;
+                    else virusDisplay.showCases = false;
+                }
             }
         }
     }
@@ -217,20 +244,21 @@ function displayInstruction() {
             noStroke();
             fill(200, 253, 100);
             textSize(width / 70);
-            text('Please First CLICK/PRESS Anywhere On The Screen For The System To Detect The Type of Used Device.' + '\n' +
+            text('Please First CLICK/PRESS ONCE Anywhere On The Screen For The System To Detect The Type of Used Device.' + '\n' +
+                'It Might Seem Like Nothing Happens, But Once You Finish That, The Detection Will Also Finish.' + '\n' +
                 'Thank You!!!',
-                0, -100);
+                0, -120);
 
             fill(200);
             textSize(width / 80);
             text('You Might Want To Use The Buttons To Explore The Data About The COVID19 Worldwide',
-                0, -40);
+                0, -20);
             text('Or If You Notice When The Site Asks For Microphone Access Permission, You Can Say A' + '\n' + 
                     'Number That Corresponds To A Country To See Its Specific Data (Mobile Limited Access Currently)',
-                0, 20);
+                0, 40);
             text("If The Site Doesn't Respond Accordingly To Your Speech (It Has To Be A Number), And/Or," + '\n' + 
                     'If There Is No Available Recording Button On The Tab. Refresh The Page, And Remember To Click "Allow" When Prompted',
-                0, 100);
+                0, 120);
         pop();
     }
 
@@ -240,34 +268,36 @@ function displayInstruction() {
     else questionPosition = 5;
 
     let d2 = dist(mouseX, mouseY, width / 2 + 300, 25);
-    if (d2 < 25) {
-        push();
-            if (!mobile) {
-                translate(width / 2 + 300, 25);
-            } else translate(width / 2 + 100, 25);
-            fill(255, 50, 0);
-            if (!mobile) ellipse(0, 0, 50);
-            else ellipse(0, 0, 25);
-            fill(255);
-            if (!mobile) textSize(width / 30);
-            else textSize(width / 25);
-            if (!instruction) text('?', 0, questionPosition);
-            else text('X', 0, questionPosition);
-        pop();
-    } else {
-        push();
-            if (!mobile) {
-                translate(width / 2 + 300, 25);
-            } else translate(width / 2 + 100, 25);
-            fill(255, 50, 0);
-            if (!mobile) ellipse(0, 0, 50);
-            else ellipse(0, 0, 25);
-            fill(0);
-            if (!mobile) textSize(width / 45);
-            else textSize(width / 45);
-            if (!instruction) text('?', 0, questionPosition);
-            else text('X', 0, questionPosition);
-        pop();
+    if (!virusDisplay.showCases) {
+        if (d2 < 25) {
+            push();
+                if (!mobile) {
+                    translate(width / 2 + 300, 25);
+                } else translate(width / 2 + 100, 25);
+                fill(255, 50, 0);
+                if (!mobile) ellipse(0, 0, 50);
+                else ellipse(0, 0, 25);
+                fill(255);
+                if (!mobile) textSize(width / 30);
+                else textSize(width / 25);
+                if (!instruction) text('?', 0, questionPosition);
+                else text('X', 0, questionPosition);
+            pop();
+        } else {
+            push();
+                if (!mobile) {
+                    translate(width / 2 + 300, 25);
+                } else translate(width / 2 + 100, 25);
+                fill(255, 50, 0);
+                if (!mobile) ellipse(0, 0, 50);
+                else ellipse(0, 0, 25);
+                fill(0);
+                if (!mobile) textSize(width / 45);
+                else textSize(width / 45);
+                if (!instruction) text('?', 0, questionPosition);
+                else text('X', 0, questionPosition);
+            pop();
+        }
     }
 }
 
@@ -314,6 +344,8 @@ function displayVirus() {
     displayBtn();
     displayInstruction();
 
+    virusDisplay.showNewCases();
+    
     if (gallery_move < 1) {
         gallery_move = virusData.Countries.length;
     } else if (gallery_move > virusData.Countries.length) {
@@ -325,6 +357,6 @@ async function getVirus() {
     const URL = 'https://api.covid19api.com/summary';
     const response = await fetch(URL);
     virusData = await response.json();
-    console.log(virusData);
+    // console.log(virusData);
     return virusData;
 }
