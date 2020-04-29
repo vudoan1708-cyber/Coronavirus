@@ -134,22 +134,24 @@ function keyPressed() {
 function mousePressed() {
     if (!mobile) {
         if (!virusDisplay.showCases) {
-            // <
-            if(mouseX > width / 2 - 300 && mouseX < width / 2 - 195) {
-                if (mouseY > height / 2 - 35 && mouseY < height / 2 + 45) {
-                    navSound.play();
-                    gallery_move--;
+            if (!instruction) {
+                // <
+                if(mouseX > width / 2 - 300 && mouseX < width / 2 - 195) {
+                    if (mouseY > height / 2 - 35 && mouseY < height / 2 + 45) {
+                        navSound.play();
+                        gallery_move--;
+                    }
+                }
+
+                // >
+                if(mouseX < width / 2 + 300 && mouseX > width / 2 + 195) {
+                    if (mouseY > height / 2 - 35 && mouseY < height / 2 + 45) {
+                        navSound.play();
+                        gallery_move++;
+                    }
                 }
             }
-
-            // >
-            if(mouseX < width / 2 + 300 && mouseX > width / 2 + 195) {
-                if (mouseY > height / 2 - 35 && mouseY < height / 2 + 45) {
-                    navSound.play();
-                    gallery_move++;
-                }
-            }
-
+            
             // QUESTION MARKS (TO TRIGGER THE INSTRUCTIONS)
             let d2 = dist(mouseX, mouseY, width / 2 + 300, 25);
             if (d2 < 25) {
@@ -188,19 +190,21 @@ function touchStarted() {
     
     if (mobile) {
         if (!virusDisplay.showCases) {
-            // <
-            if(mouseX > 0 && mouseX < width / 2 - (width / (virusDisplay.d / 5))) {
-                if (mouseY > 0 && mouseY < height) {
-                    navSound.play();
-                    gallery_move--;
+            if (!instruction) {
+                // <
+                if(mouseX > 0 && mouseX < width / 2 - (width / (virusDisplay.d / 5))) {
+                    if (mouseY > 0 && mouseY < height) {
+                        navSound.play();
+                        gallery_move--;
+                    }
                 }
-            }
 
-            // >
-            if(mouseX < width && mouseX > width / 2 + (width / (virusDisplay.d / 5))) {
-                if (mouseY > 0 && mouseY < height - (height / 5)) {
-                    navSound.play();
-                    gallery_move++;
+                // >
+                if(mouseX < width && mouseX > width / 2 + (width / (virusDisplay.d / 5))) {
+                    if (mouseY > 0 && mouseY < height - (height / 5)) {
+                        navSound.play();
+                        gallery_move++;
+                    }
                 }
             }
 
