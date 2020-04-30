@@ -240,30 +240,53 @@ class VirusDisplay {
 
                         // show countries and change fill when on hover
                         if (mouseX > newStep && mouseX < newStep + newWidth) {
-                            // for filling the text
-                            fill(253, 100, 100);
-                            textSize(width / 75);
-                            // check if mouse x coordinate is going over the new cases button
-                            if (mouseX > width - width / (this.d / 5) && mouseX < width) {
-                                text(countryNames[j], width / 2, height - (height / 5) / 1.5);
-                                fill(255, 180);
-                                text(newConfirmed[j], width / 2, height - (height / 5) / 2.5);
-                                // check if mouse x coordinate is going passed the first rect
-                            } else if (mouseX < width - (width - this.d * 5)) { 
-                                text(countryNames[j], width / 2, height - (height / 5) / 1.5);
-                                fill(255, 180);
-                                text(newConfirmed[j], width / 2, height - (height / 5) / 2.5);
-                                // otherwise
-                            } else {
-                                text(countryNames[j], newStep, height - (height / 5) / 1.5);
-                                fill(255, 180);
-                                text(newConfirmed[j], newStep, height - (height / 5) / 2.5);
+                            if (mouseY > height - (height - this.d * 5 / 2) && mouseY < height - this.d * 5 / 2) {
+                                // for filling the text
+                                fill(253, 100, 100);
+                                textSize(width / 75);
+                                // check if mouse x coordinate is going over the new cases button
+                                if (mouseX > width - width / (this.d / 5) && mouseX < width) {
+                                    text(countryNames[j], width / 2, height - (height / 5) / 1.5);
+                                    fill(255, 180);
+                                    text(newConfirmed[j], width / 2, height - (height / 5) / 2.5);
+                                    // check if mouse x coordinate is going passed the first rect
+                                } else if (mouseX < width - (width - this.d * 5)) { 
+                                    text(countryNames[j], width / 2, height - (height / 5) / 1.5);
+                                    fill(255, 180);
+                                    text(newConfirmed[j], width / 2, height - (height / 5) / 2.5);
+                                    // otherwise
+                                } else {
+                                    text(countryNames[j], newStep, height - (height / 5) / 1.5);
+                                    fill(255, 180);
+                                    text(newConfirmed[j], newStep, height - (height / 5) / 2.5);
+                                }
+
+                                // for filling the rects
+                                fill(253, 100, 200);
+                            } else { // checking y
+                                if (newConfirmed[j] <= 150) {
+                                    fill(255, 150);
+                                } else if (newConfirmed[j] > 150 && newConfirmed[j] < 400) {
+                                    fill(255, 180);
+                                } else if (newConfirmed[j] >= 400 && newConfirmed[j] < 800) {
+                                    fill(255, 200);
+                                } else {
+                                    fill(255, 220);
+                                }
                             }
-
-                            // for filling the rects
-                            fill(253, 100, 200);
-                        } else fill(255, 220);
-
+                            
+                        } else { // checking x
+                            if (newConfirmed[j] <= 150) {
+                                fill(255, 150);
+                            } else if (newConfirmed[j] > 150 && newConfirmed[j] < 400) {
+                                fill(255, 180);
+                            } else if (newConfirmed[j] >= 400 && newConfirmed[j] < 800) {
+                                fill(255, 200);
+                            } else {
+                                fill(255, 220);
+                            }
+                        }
+                        
                         // constrain the horizontal limit that data can be shown on the menu
                         if (newStep > (width - (width - this.d * 5)) - 100 && newStep < (width - this.d * 5) + 100) {
                             rect(newStep, height - (height / 5), newWidth, -newConfirmed[j]);
