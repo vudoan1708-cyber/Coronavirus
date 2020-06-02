@@ -1,5 +1,6 @@
 let virusData = null;
-let loading = true;
+let loading = true,
+    errorCatched = false;
 
 // storing the data
 let countryNames = [], // store the countries names
@@ -90,11 +91,9 @@ function setup() {
         .then(() => { loading = false; })
         .catch(err => { 
             console.error(err); 
-            push();
-                fill(255, 0, 0, 200);
-                textSize(width / 30);
-                text('Too Many Request!!!' + '\n' + 'Please Wait For A Bit And Try Refreshing The Site', width / 2, height / 2);
-            pop();
+
+            // error handling
+            errorCatched = true;
         })
 
     virusDisplay = new VirusDisplay();
@@ -112,8 +111,13 @@ function windowResized() {
 function draw() {
     background(20);
     if (!loading) {
-        // horrorSound.loop();
         displayVirus();
+    } else if (errorCatched) {
+        push();
+            fill(255, 0, 0, 200);
+            textSize(width / 30);
+            text('Too Many Requests!!!' + '\n' + 'Please Wait For A Bit And Try Refreshing The Site', width / 2, height / 2);
+        pop();
     }
 }
 

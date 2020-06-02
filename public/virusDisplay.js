@@ -261,7 +261,7 @@ class VirusDisplay {
                                     text(newConfirmed[j], newStep, height - (height / 5) / 2.5);
                                 }
 
-                                // for filling the rects
+                                // filling the rects
                                 fill(253, 100, 200);
                             } else { // checking y
                                 if (newConfirmed[j] <= 150) {
