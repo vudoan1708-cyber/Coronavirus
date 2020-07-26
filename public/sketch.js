@@ -8,10 +8,6 @@ let countryNames = [], // store the countries names
     newDeaths = [], // stored number of new deaths
     newRecovered = [], // store number of recovered cases
 
-    totalConfirmed = [], // store total number of confirmed cases
-    totalDeaths = [], // store total number of death cases
-    totalRecovered = [], // store total number of recovered cases
-
     dates_times = null,
     days = null, // store days
     times = null, // store times
@@ -22,7 +18,8 @@ let countryNames = [], // store the countries names
 let virusDisplay;
 
 let gallery_move = 1,
-    graph_move = 1;
+    graph_move = 1,
+    sort = 0;
 
 // sound effects
 let horrorSound,
@@ -37,9 +34,44 @@ function preload() {
     navSound = loadSound('assets/sound/play_button_clicked.mp3');
 }
 
+function sortAlgorithm() {
+
+    // bubble sort
+    for (let i = 0; i < virusData.Countries.length; i++) {
+
+        for (let j = 0; j < virusData.Countries.length - i - 1; j++) {
+
+            // confirmed cases
+            if (sort == 1) {
+                if (virusData.Countries[j].TotalConfirmed < virusData.Countries[j + 1].TotalConfirmed) {
+                    swap(virusData, j, j + 1);
+                }
+
+            // countries'names
+            } else if (sort == 0) {
+                if (virusData.Countries[j].Country > virusData.Countries[j + 1].Country) {
+                    swap(virusData, j, j + 1);
+                }
+
+            // death cases
+            } else if (sort == 2) {
+                if (virusData.Countries[j].TotalDeaths < virusData.Countries[j + 1].TotalDeaths) {
+                    swap(virusData, j, j + 1);
+                }
+
+            // recover cases
+            } else if (sort == 3) {
+                if (virusData.Countries[j].TotalRecovered < virusData.Countries[j + 1].TotalRecovered) {
+                    swap(virusData, j, j + 1);
+                }
+            }
+        }
+    }
+}
+
 function setup() {
     createCanvas(window.innerWidth, window.innerHeight).parent('canvas');
-    // frameRate(30);
+    
     // load p5 speech
     let lang = navigator.language || 'en-UK';
     let speechRec = new p5.SpeechRec(lang, gotSpeech);
@@ -47,20 +79,24 @@ function setup() {
     let continuous = true,
         interim = false;
     speechRec.start(continuous, interim);
+
     // store users' speech into a variable
     function gotSpeech() {
         let myString = speechRec.resultString;
+
         // check if the speechRec thinks the result is true
         if (speechRec.resultValue) {
+
             // check if the incoming word is a number 
             if (!isNaN(Number(myString))) {
+
                 // assign that number to control gallery movement
                 gallery_move = Number(myString);
                 navSound.play();
             }
         }
-        // console.log(myString);
     }
+
     // retrieve the external API
     getVirus()
         .then((data) => {
@@ -68,21 +104,16 @@ function setup() {
         })
         .then(() => {
             for (let i = 0; i < virusData.Countries.length; i++) {
-                countryNames[i] = virusData.Countries[i].Country;
-
+    
                 newConfirmed[i] = virusData.Countries[i].NewConfirmed;
                 newDeaths[i] = virusData.Countries[i].NewDeaths;
                 newRecovered[i] = virusData.Countries[i].NewRecovered;
-
-                totalConfirmed[i] = virusData.Countries[i].TotalConfirmed;
-                totalDeaths[i] = virusData.Countries[i].TotalDeaths;
-                totalRecovered[i] = virusData.Countries[i].TotalRecovered;
-
+        
             }
             dates_times = virusData.Date.split('T');
             days = dates_times[0];
             times = dates_times[1].split('Z')[0];
-
+        
             // globally
             global_totalConfirmed = virusData.Global.TotalConfirmed;
             global_totalDeaths = virusData.Global.TotalDeaths;
@@ -102,6 +133,14 @@ function setup() {
 
     rectMode(CENTER);
     textAlign(CENTER);
+}
+
+function swap(virusData, a, b) {
+
+    // countries
+    let temp_a = virusData.Countries[a];
+    virusData.Countries[a] = virusData.Countries[b];
+    virusData.Countries[b] = temp_a;
 }
 
 function windowResized() {
@@ -147,6 +186,20 @@ function keyPressed() {
     } else if (keyCode === DOWN_ARROW) {
         navSound.play();
         graph_move--;
+    }
+
+    if (key == '0') {
+        sort = 0;
+        sortAlgorithm();
+    } else if (key == '1') {
+        sort = 1;
+        sortAlgorithm();
+    } else if (key == '2') {
+        sort = 2;
+        sortAlgorithm();
+    } else if (key == '3') {
+        sort = 3;
+        sortAlgorithm();
     }
 }
 
@@ -213,6 +266,26 @@ function mousePressed() {
                 }
             }
         }
+
+        // radio buttons
+        let d1 = dist(mouseX, mouseY, width - (width / (virusDisplay.d / 5)) + 50, height / 2 - height / 2.75),
+            d2 = dist(mouseX, mouseY, width - (width / (virusDisplay.d / 5)) + 50, height / 2 - height / 3.25),
+            d3 = dist(mouseX, mouseY, width - (width / (virusDisplay.d / 5)) + 50, height / 2 - height / 4),
+            d4 = dist(mouseX, mouseY, width - (width / (virusDisplay.d / 5)) + 50, height / 2 - height / 5.25);
+
+        if (d1 < virusDisplay.rr) {
+            sort = 0;
+            sortAlgorithm();
+        } else if (d2 < virusDisplay.rr) {
+            sort = 1;
+            sortAlgorithm();
+        } else if (d3 < virusDisplay.rr) {
+            sort = 2;
+            sortAlgorithm();
+        } else if (d4 < virusDisplay.rr) {
+            sort = 3;
+            sortAlgorithm();
+        }
     }
 }
 
@@ -237,7 +310,7 @@ function touchStarted() {
 
                 // >
                 if(mouseX < width && mouseX > width / 2 + (width / (virusDisplay.d / 5))) {
-                    if (mouseY > 0 && mouseY < height - (height / 5)) {
+                    if (mouseY > height / 2 - height / 6 && mouseY < height - (height / 5)) {
                         navSound.play();
                         gallery_move++;
                     }
@@ -283,6 +356,27 @@ function touchStarted() {
                     else virusDisplay.showCases = false;
                 }
             }
+        }
+
+        // radio buttons
+        // country's names
+        let d1 = dist(mouseX, mouseY, width - (width / (virusDisplay.d / 5)) + 50, height / 2 - height / 2.9),
+            d2 = dist(mouseX, mouseY, width - (width / (virusDisplay.d / 5)) + 50, height / 2 - height / 3.5),
+            d3 = dist(mouseX, mouseY, width - (width / (virusDisplay.d / 5)) + 50, height / 2 - height / 4.25),
+            d4 = dist(mouseX, mouseY, width - (width / (virusDisplay.d / 5)) + 50, height / 2 - height / 5.75);
+
+        if (d1 < virusDisplay.rr) {
+            sort = 0;
+            sortAlgorithm();
+        } else if (d2 < virusDisplay.rr) {
+            sort = 1;
+            sortAlgorithm();
+        } else if (d3 < virusDisplay.rr) {
+            sort = 2;
+            sortAlgorithm();
+        } else if (d4 < virusDisplay.rr) {
+            sort = 3;
+            sortAlgorithm();
         }
     }
 }
@@ -420,6 +514,5 @@ async function getVirus() {
     const URL = 'https://api.covid19api.com/summary';
     const response = await fetch(URL);
     virusData = await response.json();
-    // console.log(virusData);
     return virusData;
 }

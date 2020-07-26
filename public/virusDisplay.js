@@ -13,6 +13,10 @@ class VirusDisplay {
 
         // for better computational performances (when menu shows, stop other stuff in the bg)
         this.showCases = false;
+
+        // radio button radius
+        if (!mobile) this.rr = 15;
+        else this.rr = 10;
     }
 
     show() {
@@ -21,32 +25,34 @@ class VirusDisplay {
             // translate origin to the centre of a screen
                 translate(width / 2, this.y);
                 
-                // ellipse(0, 0, this.d);
-                for (let i = 0; i < totalConfirmed.length; i++) {
+                for (let i = 0; i < virusData.Countries.length; i++) {
                     this.x = ((this.d * i)) - (this.d * (gallery_move - 1));
+
                     // only show one that is at the centre of a screen
                     if (this.x == 0) {
     
                         // total confirmed cases
-                        if (totalConfirmed[i] > 100000) {
+                        if (virusData.Countries[i].TotalConfirmed > 100000) {
                             fill(255, 200);
-                        } else if (totalConfirmed[i] > 10000 && totalConfirmed[i] <= 100000) {
+                        } else if (virusData.Countries[i].TotalConfirmed > 10000 && 
+                                virusData.Countries[i].TotalConfirmed <= 100000) {
                             fill(255, 150);
                         } else  fill(255, 80);
-                        ellipse(this.x, 0, totalConfirmed[i] * this.d / width);
+                        ellipse(this.x, 0, virusData.Countries[i].TotalConfirmed * this.d / width);
                         
                         // total recovered
-                        if (totalRecovered[i] > 100000) {
+                        if (virusData.Countries[i].TotalRecovered > 100000) {
                             fill(0, 200, 100);
-                        } else if (totalRecovered[i] > 10000 && totalRecovered[i] <= 100000) {
+                        } else if (virusData.Countries[i].TotalRecovered > 10000 && 
+                                    virusData.Countries[i].TotalRecovered <= 100000) {
                             fill(0, 200, 100, 150);
                         } else  fill(0, 200, 100, 80);
                         
-                        ellipse(this.x + this.d / 2, 0, totalRecovered[i] * this.d / width);
+                        ellipse(this.x + this.d / 2, 0, virusData.Countries[i].TotalRecovered * this.d / width);
     
                         // total deaths
                         fill(255, 0, 0);
-                        ellipse(this.x, 0, totalDeaths[i] * this.d / width);
+                        ellipse(this.x, 0, virusData.Countries[i].TotalDeaths * this.d / width);
     
                         // bg 
                         push();
@@ -114,55 +120,80 @@ class VirusDisplay {
                         // information
                         strokeWeight(2);
                         stroke(0);
-                        if (totalConfirmed[i] > 100000) {
+                        if (virusData.Countries[i].TotalConfirmed > 100000) {
                             fill(0, 250);
                             rect(0, this.d * 15.5, width / 3, width / 7);
                             fill(253, 100, 200);
-                            textSize(width / countryNames[i]);
-                            text(countryNames[i], this.x, this.d * 14);
+                            textSize(width / virusData.Countries[i].Country);
+                            text(virusData.Countries[i].Country, this.x, this.d * 14);
+
                             fill(255, 180);
-                            text("Total Confirmed Cases: " + totalConfirmed[i], this.x, this.d * 15);
-    
+                            if (sort == 0 || sort == 1)
+                                text("Total Confirmed Cases: " + virusData.Countries[i].TotalConfirmed, this.x, this.d * 15);
+                            else if (sort == 2) text("Total Confirmed Cases: " + virusData.Countries[i].TotalConfirmed, this.x, this.d * (15 + sort));
+                            else if (sort == 3) text("Total Confirmed Cases: " + virusData.Countries[i].TotalConfirmed, this.x, this.d * (16));
+
                             // total recovered
                             fill(0, 200, 100);
-                            text("Total Recovered Cases: " + totalRecovered[i], this.x, this.d * 16);
+                            if (sort == 3)
+                                text("Total Recovered Cases: " + virusData.Countries[i].TotalRecovered, this.x, this.d * (18 - sort));
+                            else text("Total Recovered Cases: " + virusData.Countries[i].TotalRecovered, this.x, this.d * 16);
     
                             // total deaths
                             fill(255, 0, 0);
-                            text("Total Death Cases: " + totalDeaths[i], this.x, this.d * 17);
-                        } else if (totalConfirmed[i] > 10000 && totalConfirmed[i] <= 100000) {
+                            if (sort == 2)
+                                text("Total Death Cases: " + virusData.Countries[i].TotalDeaths, this.x, this.d * (17 - sort));
+                            else text("Total Death Cases: " + virusData.Countries[i].TotalDeaths, this.x, this.d * 17);
+
+                        } else if (virusData.Countries[i].TotalConfirmed > 10000 && 
+                                    virusData.Countries[i].TotalConfirmed <= 100000) {
                             fill(0, 150);
                             rect(0, this.d * 12.5, width / 3, width / 7);
                             fill(253, 100, 200);
-                            textSize(width / countryNames[i]);
-                            text(countryNames[i], this.x, this.d * 11);
-                            fill(255, 180);
-                            text("Total Confirmed Cases: " + totalConfirmed[i], this.x, this.d * 12);
+                            textSize(width / virusData.Countries[i].Country);
+                            text(virusData.Countries[i].Country, this.x, this.d * 11);
                             
+                            fill(255, 180);
+                            if (sort == 0 || sort == 1)
+                                text("Total Confirmed Cases: " + virusData.Countries[i].TotalConfirmed, this.x, this.d * 12);
+                            else if (sort == 2) text("Total Confirmed Cases: " + virusData.Countries[i].TotalConfirmed, this.x, this.d * (14));
+                            else if (sort == 3) text("Total Confirmed Cases: " + virusData.Countries[i].TotalConfirmed, this.x, this.d * (13));
+
                             // total recovered
                             fill(0, 200, 100);
-                            text("Total Recovered Cases: " + totalRecovered[i], this.x, this.d * 13);
+                            if (sort == 3)
+                                text("Total Recovered Cases: " + virusData.Countries[i].TotalRecovered, this.x, this.d * (12));
+                            else text("Total Recovered Cases: " + virusData.Countries[i].TotalRecovered, this.x, this.d * 13);
     
-                            
                             // total deaths
                             fill(255, 0, 0);
-                            text("Total Death Cases: " + totalDeaths[i], this.x, this.d * 14);
+                            if (sort == 2)
+                                text("Total Death Cases: " + virusData.Countries[i].TotalDeaths, this.x, this.d * (12));
+                            else text("Total Death Cases: " + virusData.Countries[i].TotalDeaths, this.x, this.d * 14);
                         } else {
                             fill(0, 150);
                             rect(0, this.d * 10.5, width / 3, width / 7);
                             fill(253, 100, 200);
-                            textSize(width / countryNames[i]);
-                            text(countryNames[i], this.x, this.d * 9);
-                            fill(255, 180);
-                            text("Total Confirmed Cases: " + totalConfirmed[i], this.x, this.d * 10);
+                            textSize(width / virusData.Countries[i].Country);
+                            text(virusData.Countries[i].Country, this.x, this.d * 9);
                             
+                            fill(255, 180);
+                            if (sort == 0 || sort == 1)
+                                text("Total Confirmed Cases: " + virusData.Countries[i].TotalConfirmed, this.x, this.d * 10);
+                            else if (sort == 2) text("Total Confirmed Cases: " + virusData.Countries[i].TotalConfirmed, this.x, this.d * (10 + sort));
+                            else if (sort == 3) text("Total Confirmed Cases: " + virusData.Countries[i].TotalConfirmed, this.x, this.d * (11));
+
                             // total recovered
                             fill(0, 200, 100);
-                            text("Total Recovered Cases: " + totalRecovered[i], this.x, this.d * 11);
-                            
+                            if (sort == 3)
+                                text("Total Recovered Cases: " + virusData.Countries[i].TotalRecovered, this.x, this.d * (10));
+                            else text("Total Recovered Cases: " + virusData.Countries[i].TotalRecovered, this.x, this.d * 11);
+    
                             // total deaths
                             fill(255, 0, 0);
-                            text("Total Death Cases: " + totalDeaths[i], this.x, this.d * 12);
+                            if (sort == 2)
+                                text("Total Death Cases: " + virusData.Countries[i].TotalDeaths, this.x, this.d * (10));
+                            else text("Total Death Cases: " + virusData.Countries[i].TotalDeaths, this.x, this.d * 12);
                         }
                     }
                 }
@@ -186,13 +217,76 @@ class VirusDisplay {
     }
 
     showGlobalData() {
+        let h1, h2, h3, h4, h_title;
+
         if (!this.showCases) {
             push();
                 stroke(0);
                 strokeWeight(2);
                 fill(50, 100);
                 rect(width - (width / (this.d / 5)) / 2, height / 2, width / (this.d / 5), this.d * 50);
+                
+                noStroke();
+                ellipseMode(CENTER);
+
+                // radio buttons
+                // country's names
+                if (sort == 0) fill(253, 100, 200);
+                else fill(255);
+
+                if (!mobile) {
+                    h1 = height / 2 - height / 2.75;
+                    h2 = height / 2 - height / 3.25;
+                    h3 = height / 2 - height / 4;
+                    h4 = height / 2 - height / 5.25;
+                    h_title = height / 2 - height / 2 + width / 25;
+                } else {
+                    h1 = height / 2 - height / 2.9;
+                    h2 = height / 2 - height / 3.5;
+                    h3 = height / 2 - height / 4.25;
+                    h4 = height / 2 - height / 5.75;
+                    h_title = height / 2 - height / 2 + width / 5;
+                }
+
+                ellipse(width - (width / (this.d / 5)) + 50, h1, this.rr);
+
+                // confirmed cases
+                if (sort == 1) fill(253, 100, 200);
+                else fill(255);
+
+                ellipse(width - (width / (this.d / 5)) + 50, h2, this.rr);
+
+                // death cases
+                if (sort == 2) fill(253, 100, 200);
+                else fill(255);
+                ellipse(width - (width / (this.d / 5)) + 50, h3, this.rr);
+
+                // recovered cases
+                if (sort == 3) fill(253, 100, 200);
+                else fill(255);
+                ellipse(width - (width / (this.d / 5)) + 50, h4, this.rr);
+                
+                // sort
+                textSize(width / 45);
                 fill(200);
+                text('Sort By', (width - (width / (this.d / 5)) / 2), h_title);
+
+                // country's names
+                textSize(width / 70);
+                fill(200);
+                text("Country's Names (A - Z)", (width - (width / (this.d / 5)) / 2), height / 2 - height / 2.75);
+
+                // confirmed cases
+                fill(200);
+                text("Total Confirmed Cases", (width - (width / (this.d / 5)) / 2), height / 2 - height / 3.25);
+
+                // death cases
+                fill(200);
+                text("Total Death Cases", (width - (width / (this.d / 5)) / 2), height / 2 - height / 4);
+
+                // recovered cases
+                fill(200);
+                text("Total Recovered Cases", (width - (width / (this.d / 5)) / 2), height / 2 - height / 5.25);
 
                 // global confirmed
                 textSize(width / 72);
@@ -246,17 +340,17 @@ class VirusDisplay {
                                 textSize(width / 75);
                                 // check if mouse x coordinate is going over the new cases button
                                 if (mouseX > width - width / (this.d / 5) && mouseX < width) {
-                                    text(countryNames[j], width / 2, height - (height / 5) / 1.5);
+                                    text(virusData.Countries[j].Country, width / 2, height - (height / 5) / 1.5);
                                     fill(255, 180);
                                     text(newConfirmed[j], width / 2, height - (height / 5) / 2.5);
                                     // check if mouse x coordinate is going passed the first rect
                                 } else if (mouseX < width - (width - this.d * 5)) { 
-                                    text(countryNames[j], width / 2, height - (height / 5) / 1.5);
+                                    text(virusData.Countries[ij].Country, width / 2, height - (height / 5) / 1.5);
                                     fill(255, 180);
                                     text(newConfirmed[j], width / 2, height - (height / 5) / 2.5);
                                     // otherwise
                                 } else {
-                                    text(countryNames[j], newStep, height - (height / 5) / 1.5);
+                                    text(virusData.Countries[j].Country, newStep, height - (height / 5) / 1.5);
                                     fill(255, 180);
                                     text(newConfirmed[j], newStep, height - (height / 5) / 2.5);
                                 }
@@ -440,10 +534,6 @@ class VirusDisplay {
 
     showCountries() {
         if (!this.showCases) {
-            // push total length of countryNames array into this.numbers
-            for (let n = 0; n < countryNames.length; n++) {
-                this.numbers.push(n + 1);
-            }
             push();
                 stroke(0);
                 strokeWeight(2);
@@ -453,16 +543,20 @@ class VirusDisplay {
                 textSize(width / 60);
 
                 let borderBox = 40;
-                for (let c = 0; c < countryNames.length; c++) {
-                    if (gallery_move > 1 && gallery_move < countryNames.length + 1) {
+                for (let c = 0; c < virusData.Countries.length; c++) {
+
+                    // push total length of virusData.Countries array into this.numbers
+                    this.numbers.push(c + 1);
+                    if (gallery_move > 1 && gallery_move < virusData.Countries.length + 1) {
                         this.country_y = (borderBox * (c + 1)) - (borderBox * (gallery_move - 1));
                     } else this.country_y = borderBox * (c + 1); // to show the first country
 
                     // highlight a chosen country with purple-ish
                     if (this.country_y == borderBox) fill(253, 100, 200);
+                    
                     // otherwise, fill with white with some alpha
                     else fill(255, 200);
-                    text(this.numbers[c] + '. ' + countryNames[c], (width / (this.d / 5)) / 2, this.country_y);
+                    text(this.numbers[c] + '. ' + virusData.Countries[c].Country, (width / (this.d / 5)) / 2, this.country_y);
                 }
             pop();
         }
