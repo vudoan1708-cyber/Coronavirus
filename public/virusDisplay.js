@@ -197,10 +197,13 @@ class VirusDisplay {
                 ellipseMode(CENTER);
 
                 // radio buttons
-                // country's names
-                if (sort == 0) fill(253, 100, 200);
-                else fill(255);
 
+                let d1 = dist(mouseX, mouseY, width - (width / (virusDisplay.d / 5)) + 50, height / 2 - height / 2.75),
+                    d2 = dist(mouseX, mouseY, width - (width / (virusDisplay.d / 5)) + 50, height / 2 - height / 3.25),
+                    d3 = dist(mouseX, mouseY, width - (width / (virusDisplay.d / 5)) + 50, height / 2 - height / 4),
+                    d4 = dist(mouseX, mouseY, width - (width / (virusDisplay.d / 5)) + 50, height / 2 - height / 5.25);
+                    
+                // declaring variables
                 if (!mobile) {
                     h1 = height / 2 - height / 2.75;
                     h2 = height / 2 - height / 3.25;
@@ -215,22 +218,35 @@ class VirusDisplay {
                     h_title = height / 2 - height / 2 + width / 5;
                 }
 
+                if (sort == 0) fill(253, 100, 200);
+                else {
+                    if (d1 < this.rr / 2) fill(150);
+                    else fill(255);
+                }
                 ellipse(width - (width / (this.d / 5)) + 50, h1, this.rr);
 
                 // confirmed cases
                 if (sort == 1) fill(253, 100, 200);
-                else fill(255);
-
+                else {
+                    if (d2 < this.rr / 2) fill(150);
+                    else fill(255);
+                }
                 ellipse(width - (width / (this.d / 5)) + 50, h2, this.rr);
 
                 // death cases
                 if (sort == 2) fill(253, 100, 200);
-                else fill(255);
+                else {
+                    if (d3 < this.rr / 2) fill(150);
+                    else fill(255);
+                }
                 ellipse(width - (width / (this.d / 5)) + 50, h3, this.rr);
 
                 // recovered cases
                 if (sort == 3) fill(253, 100, 200);
-                else fill(255);
+                else {
+                    if (d4 < this.rr / 2) fill(150);
+                    else fill(255);
+                }
                 ellipse(width - (width / (this.d / 5)) + 50, h4, this.rr);
                 
                 // sort

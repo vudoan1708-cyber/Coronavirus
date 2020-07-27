@@ -270,16 +270,16 @@ function mousePressed() {
             d3 = dist(mouseX, mouseY, width - (width / (virusDisplay.d / 5)) + 50, height / 2 - height / 4),
             d4 = dist(mouseX, mouseY, width - (width / (virusDisplay.d / 5)) + 50, height / 2 - height / 5.25);
 
-        if (d1 < virusDisplay.rr) {
+        if (d1 < virusDisplay.rr / 2) {
             sort = 0;
             sortAlgorithm();
-        } else if (d2 < virusDisplay.rr) {
+        } else if (d2 < virusDisplay.rr / 2) {
             sort = 1;
             sortAlgorithm();
-        } else if (d3 < virusDisplay.rr) {
+        } else if (d3 < virusDisplay.rr / 2) {
             sort = 2;
             sortAlgorithm();
-        } else if (d4 < virusDisplay.rr) {
+        } else if (d4 < virusDisplay.rr / 2) {
             sort = 3;
             sortAlgorithm();
         }
