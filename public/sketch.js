@@ -128,8 +128,6 @@ function setup() {
         })
 
     virusDisplay = new VirusDisplay();
-    // horrorSound.play();
-    // horrorSound.setVolume(0.005);
 
     rectMode(CENTER);
     textAlign(CENTER);
@@ -137,7 +135,6 @@ function setup() {
 
 function swap(virusData, a, b) {
 
-    // countries
     let temp_a = virusData.Countries[a];
     virusData.Countries[a] = virusData.Countries[b];
     virusData.Countries[b] = temp_a;
