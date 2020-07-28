@@ -31,29 +31,19 @@ class VirusDisplay {
                 for (let i = 0; i < virusData.Countries.length; i++) {
                     this.x = ((this.d * i)) - (this.d * (gallery_move - 1));
 
-                    let perC = virusData.Countries[i].TotalConfirmed / (width * 25),
-                        perR = virusData.Countries[i].TotalRecovered / (width * 25),
-                        perD = virusData.Countries[i].TotalDeaths / (width * 1.5);
+                    let perC = virusData.Countries[i].TotalConfirmed / (width * 20),
+                        perR = virusData.Countries[i].TotalRecovered / (width * 20),
+                        perD = virusData.Countries[i].TotalDeaths / (width * 4);
 
                     // only show one that is at the centre of a screen
                     if (this.x == 0) {
 
                         // total confirmed cases
-                        if (virusData.Countries[i].TotalConfirmed > 100000) {
-                            fill(255, 200);
-                        } else if (virusData.Countries[i].TotalConfirmed > 10000 && 
-                                virusData.Countries[i].TotalConfirmed <= 100000) {
-                            fill(255, 150);
-                        } else  fill(255, 80);
+                        fill(255, 200);
                         ellipse(this.x, 0, perC);
                         
                         // total recovered
-                        if (virusData.Countries[i].TotalRecovered > 100000) {
-                            fill(0, 200, 100);
-                        } else if (virusData.Countries[i].TotalRecovered > 10000 && 
-                                    virusData.Countries[i].TotalRecovered <= 100000) {
-                            fill(0, 200, 100, 150);
-                        } else  fill(0, 200, 100, 80);
+                        fill(0, 200, 100);
                         
                         ellipse(this.x + this.d / 2, 0, perR);
     
@@ -66,6 +56,7 @@ class VirusDisplay {
                             noFill();
                             stroke(255, 100);
                             strokeWeight(2.5);
+
                             if (!mobile) {
                                 beginShape(POINTS);
                                 let n = 6, distance = 60;
@@ -93,7 +84,9 @@ class VirusDisplay {
                                 endShape(CLOSE);
                                 if (this.q <= 360) this.q += 0.0000009;
                                 else this.q = 0;
-                            } else  { // mobile
+
+                            // mobile
+                            } else  { 
                                 beginShape(POINTS);
                                     let n = 6, distance = 60;
                                     for (let a = 0; a <= 360; a += 0.2) {
