@@ -38,42 +38,87 @@ class VirusDisplay {
                     // only show one that is at the centre of a screen
                     if (this.x == 0) {
 
-                        // total confirmed cases
-                        fill(255, 200);
-                        beginShape();
-                        for (let a = 0; a < 360; a++) {
-                            let r = perC + random(-2, 2),
-                                x = r * cos(a),
-                                y = r * sin(a);
-                            vertex(x, y);
-                        }
-                        endShape(CLOSE);
-                        // ellipse(this.x, 0, perC);
+                        // if mobile
+                        if (mobile) {
+
+                            // total confirmed cases
+                            fill(255, 200);
+                            beginShape();
+                            for (let a = 0; a < 360; a++) {
+                                let r = (perC + random(-2, 2)) / 2,
+                                    x = r * cos(a),
+                                    y = r * sin(a);
+                                vertex(x, y);
+                            }
+                            endShape(CLOSE);
+                            // ellipse(this.x, 0, perC);
+
+                            // total recovered
+                            fill(0, 200, 100);
+                            beginShape();
+                            for (let a = 0; a < 360; a++) {
+                                let r1 = (perR + random(-2, 2)) / 2,
+                                    x1 = r1 * cos(a),
+                                    y1 = r1 * sin(a);
+                                vertex(x1, y1);
+                            }
+                            endShape(CLOSE);
+
+                            // ellipse(this.x + this.d / 2, 0, perR);
+
+                            // total deaths
+                            fill(255, 0, 0);
+                            beginShape();
+                            for (let a = 0; a < 360; a++) {
+                                let r2 = (perD + random(-2, 2)) / 2,
+                                    x2 = r2 * cos(a),
+                                    y2 = r2 * sin(a);
+                                vertex(x2, y2);
+                            }
+                            endShape(CLOSE);
+                            // ellipse(this.x, 0, perD);
                         
-                        // total recovered
-                        fill(0, 200, 100);
-                        beginShape();
-                        for (let a = 0; a < 360; a++) {
-                            let r1 = perR + random(-2, 2),
-                                x1 = r1 * cos(a),
-                                y1 = r1 * sin(a);
-                            vertex(x1, y1);
+                        // otherwise
+                        } else {
+
+                            // total confirmed cases
+                            fill(255, 200);
+                            beginShape();
+                            for (let a = 0; a < 360; a++) {
+                                let r = (perC + random(-2, 2)) * 2,
+                                    x = r * cos(a),
+                                    y = r * sin(a);
+                                vertex(x, y);
+                            }
+                            endShape(CLOSE);
+                            // ellipse(this.x, 0, perC);
+                            
+                            // total recovered
+                            fill(0, 200, 100);
+                            beginShape();
+                            for (let a = 0; a < 360; a++) {
+                                let r1 = (perR + random(-2, 2)) * 2,
+                                    x1 = r1 * cos(a),
+                                    y1 = r1 * sin(a);
+                                vertex(x1, y1);
+                            }
+                            endShape(CLOSE);
+                            
+                            // ellipse(this.x + this.d / 2, 0, perR);
+        
+                            // total deaths
+                            fill(255, 0, 0);
+                            beginShape();
+                            for (let a = 0; a < 360; a++) {
+                                let r2 = (perD + random(-2, 2)) * 2,
+                                    x2 = r2 * cos(a),
+                                    y2 = r2 * sin(a);
+                                vertex(x2, y2);
+                            }
+                            endShape(CLOSE);
+                            // ellipse(this.x, 0, perD);
                         }
-                        endShape(CLOSE);
                         
-                        // ellipse(this.x + this.d / 2, 0, perR);
-    
-                        // total deaths
-                        fill(255, 0, 0);
-                        beginShape();
-                        for (let a = 0; a < 360; a++) {
-                            let r2 = perD + random(-2, 2),
-                                x2 = r2 * cos(a),
-                                y2 = r2 * sin(a);
-                            vertex(x2, y2);
-                        }
-                        endShape(CLOSE);
-                        // ellipse(this.x, 0, perD);
     
                         // bg 
                         push();
@@ -125,7 +170,8 @@ class VirusDisplay {
                         fill(0, 150);
                         rect(0, this.d * 12.5, width / 3, width / 7);
                         fill(253, 100, 200);
-                        textSize(10);
+                        if (mobile) textSize(10);
+                        else textSize(12);
                         text(virusData.Countries[i].Country, this.x, this.d * 11);
                         
                         fill(255, 180);
