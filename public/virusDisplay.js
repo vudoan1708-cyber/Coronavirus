@@ -40,16 +40,40 @@ class VirusDisplay {
 
                         // total confirmed cases
                         fill(255, 200);
-                        ellipse(this.x, 0, perC);
+                        beginShape();
+                        for (let a = 0; a < 360; a++) {
+                            let r = perC + random(-2, 2),
+                                x = r * cos(a),
+                                y = r * sin(a);
+                            vertex(x, y);
+                        }
+                        endShape(CLOSE);
+                        // ellipse(this.x, 0, perC);
                         
                         // total recovered
                         fill(0, 200, 100);
+                        beginShape();
+                        for (let a = 0; a < 360; a++) {
+                            let r1 = perR + random(-2, 2),
+                                x1 = r1 * cos(a),
+                                y1 = r1 * sin(a);
+                            vertex(x1, y1);
+                        }
+                        endShape(CLOSE);
                         
-                        ellipse(this.x + this.d / 2, 0, perR);
+                        // ellipse(this.x + this.d / 2, 0, perR);
     
                         // total deaths
                         fill(255, 0, 0);
-                        ellipse(this.x, 0, perD);
+                        beginShape();
+                        for (let a = 0; a < 360; a++) {
+                            let r2 = perD + random(-2, 2),
+                                x2 = r2 * cos(a),
+                                y2 = r2 * sin(a);
+                            vertex(x2, y2);
+                        }
+                        endShape(CLOSE);
+                        // ellipse(this.x, 0, perD);
     
                         // bg 
                         push();
@@ -58,22 +82,11 @@ class VirusDisplay {
                             strokeWeight(2.5);
 
                             if (!mobile) {
-                                beginShape(POINTS);
-                                let n = 6, distance = 60;
-                                    for (let a = 0; a <= 360; a += 0.2) {
-                                        const k = a * distance * Math.PI / 180;
-                                        const r = width * sin(n * k);
-                                        const x = r * cos(a);
-                                        const y = r * sin(a);
-                                        rotate(this.q);
-                                        vertex(x, y);
-                                    }
-                                endShape(CLOSE);
         
                                 stroke(94, 212, 255, 50);
                                 beginShape(POINTS);
                                     for (let a = 0; a <= 360; a += 0.2) {
-                                        distance = 51;
+                                        let n = 6, distance = 51;
                                         const k = a * distance * Math.PI / 180;
                                         const r = width / 2 * sin(n * k);
                                         const x = r * cos(a);
@@ -87,22 +100,11 @@ class VirusDisplay {
 
                             // mobile
                             } else  { 
-                                beginShape(POINTS);
-                                    let n = 6, distance = 60;
-                                    for (let a = 0; a <= 360; a += 0.2) {
-                                        const k = a * distance * Math.PI / 180;
-                                        const r = width * 2 * sin(n * k);
-                                        const x = r * cos(a);
-                                        const y = r * sin(a);
-                                        rotate(this.q);
-                                        vertex(x, y);
-                                    }
-                                endShape(CLOSE);
     
                                 stroke(94, 212, 255, 50);
                                 beginShape(POINTS);
                                     for (let a = 0; a <= 360; a += 0.2) {
-                                        distance = 51;
+                                        let n = 6, distance = 51;
                                         const k = a * distance * Math.PI / 180;
                                         const r = width * sin(n * k);
                                         const x = r * cos(a);
