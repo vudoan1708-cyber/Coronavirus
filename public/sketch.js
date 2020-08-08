@@ -71,31 +71,6 @@ function sortAlgorithm() {
 
 function setup() {
     createCanvas(window.innerWidth, window.innerHeight).parent('canvas');
-    
-    // load p5 speech
-    let lang = navigator.language || 'en-UK';
-    let speechRec = new p5.SpeechRec(lang, gotSpeech);
-
-    let continuous = true,
-        interim = false;
-    speechRec.start(continuous, interim);
-
-    // store users' speech into a variable
-    function gotSpeech() {
-        let myString = speechRec.resultString;
-
-        // check if the speechRec thinks the result is true
-        if (speechRec.resultValue) {
-
-            // check if the incoming word is a number 
-            if (!isNaN(Number(myString))) {
-
-                // assign that number to control gallery movement
-                gallery_move = Number(myString);
-                navSound.play();
-            }
-        }
-    }
 
     // retrieve the external API
     getVirus()
@@ -128,6 +103,55 @@ function setup() {
         })
 
     virusDisplay = new VirusDisplay();
+
+    
+    // load p5 speech
+    let lang = navigator.language || 'en-UK';
+    let speechRec = new p5.SpeechRec(lang, gotSpeech);
+
+    let continuous = true,
+        interim = false;
+    speechRec.start(continuous, interim);
+
+    // store users' speech into a variable
+    function gotSpeech() {
+        let myString = speechRec.resultString;
+
+        // check if the speechRec thinks the result is true
+        if (speechRec.resultValue) {
+
+            // check if the incoming word is a number 
+            if (!isNaN(Number(myString))) {
+
+                // assign that number to control gallery movement
+                gallery_move = Number(myString);
+                navSound.play();
+            } else {
+
+                for (let i = 0; i < virusData.Countries.length; i++) {
+
+                    // special cases
+                    if (myString == 'Vietnam') {
+
+                        myString = 'Viet Nam';
+                    } else if (myString == 'South Korea') {
+                        myString = 'Korea (South)';
+                    } else if (myString == 'Venezuela') {
+                        myString = 'Venezuela (Bolivarian Republic)';
+                    } else if (myString == 'Taiwan') {
+                        myString = 'Taiwan, Republic of China'
+                    }
+
+                    if (myString == virusData.Countries[i].Country) {
+
+                        // assign that number to control gallery movement
+                        gallery_move = i + 1;
+                        navSound.play();
+                    }
+                }
+            }
+        }
+    }
 
     rectMode(CENTER);
     textAlign(CENTER);
